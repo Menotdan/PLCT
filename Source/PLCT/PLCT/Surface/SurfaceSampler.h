@@ -12,7 +12,7 @@
 /// <summary>
 /// The settings for the surface sampler.
 /// </summary>
-API_STRUCT() struct FLAXENGINE_API SurfaceSamplerSettings : ISerializable
+API_STRUCT() struct PLCT_API SurfaceSamplerSettings : ISerializable
 {
     API_AUTO_SERIALIZATION();
     DECLARE_SCRIPTING_TYPE_NO_SPAWN(SurfaceSamplerSettings);
@@ -27,7 +27,7 @@ API_STRUCT() struct FLAXENGINE_API SurfaceSamplerSettings : ISerializable
 /// <summary>
 /// PLCT Surface Sampler. Samples surfaces at points on a grid.
 /// </summary>
-API_CLASS() class FLAXENGINE_API SurfaceSampler : public ScriptingObject
+API_CLASS() class PLCT_API SurfaceSampler : public ScriptingObject
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(SurfaceSampler, ScriptingObject);
 

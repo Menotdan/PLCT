@@ -13,7 +13,7 @@ class PLCTGraph;
 /// PLCT Volume.
 /// </summary>
 API_CLASS(Attributes = "ActorContextMenu(\"New/Other/PLCT Volume\"), ActorToolbox(\"Other\")")
-class FLAXENGINE_API PLCTVolume : public BoxVolume
+class PLCT_API PLCTVolume : public BoxVolume
 {
     DECLARE_SCENE_OBJECT(PLCTVolume);
     API_AUTO_SERIALIZATION();

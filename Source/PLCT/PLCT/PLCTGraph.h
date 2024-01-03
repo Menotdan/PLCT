@@ -35,7 +35,7 @@ public:
 /// <summary>
 /// PLCT Graph
 /// </summary>
-API_CLASS(NoSpawn, Sealed) class FLAXENGINE_API PLCTGraph : public BinaryAsset {
+API_CLASS(NoSpawn, Sealed) class PLCT_API PLCTGraph : public BinaryAsset {
     DECLARE_BINARY_ASSET_HEADER(PLCTGraph, 1);
 
 public:

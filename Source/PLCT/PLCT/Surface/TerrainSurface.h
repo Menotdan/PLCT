@@ -9,7 +9,7 @@
 /// <summary>
 /// Terrain PLCT surface.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API TerrainSurface : public PLCTSurface
+API_CLASS(Sealed) class PLCT_API TerrainSurface : public PLCTSurface
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(TerrainSurface, PLCTSurface);
 

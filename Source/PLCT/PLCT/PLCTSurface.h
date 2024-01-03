@@ -14,7 +14,7 @@ class PLCTVolume;
 /// <summary>
 /// PLCT Surface class used for sampling points.
 /// </summary>
-API_CLASS(Abstract) class FLAXENGINE_API PLCTSurface : public ScriptingObject
+API_CLASS(Abstract) class PLCT_API PLCTSurface : public ScriptingObject
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTSurface, ScriptingObject);
 
@@ -86,7 +86,7 @@ private:
 /// <summary>
 /// PLCT surface list, which allows you to reference multiple surfaces to sample.
 /// </summary>
-API_CLASS() class FLAXENGINE_API PLCTSurfaceList : public ScriptingObject
+API_CLASS() class PLCT_API PLCTSurfaceList : public ScriptingObject
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTSurfaceList, ScriptingObject);
 

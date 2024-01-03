@@ -7,7 +7,7 @@
 /// <summary>
 /// Gets all box collider surfaces found in the PLCT volume.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTGetBoxColliderSurfaces : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTGetBoxColliderSurfaces : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTGetBoxColliderSurfaces, PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -26,7 +26,7 @@ public:
 /// <summary>
 /// Gets all terrain surfaces found in the PLCT volume.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTGetTerrainSurfaces : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTGetTerrainSurfaces : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTGetTerrainSurfaces, PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -45,7 +45,7 @@ public:
 /// <summary>
 /// Samples a PLCT surface, generating points.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTSampleSurface : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTSampleSurface : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTSampleSurface, PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -70,7 +70,7 @@ public:
 /// <summary>
 /// Takes a list of points and debugs them. (Warning: This is very slow.)
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTDebugDrawPoints : public PLCTNodeEnd
+API_CLASS(Sealed) class PLCT_API PLCTDebugDrawPoints : public PLCTNodeEnd
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTDebugDrawPoints, PLCTNodeEnd);
     API_AUTO_SERIALIZATION();
@@ -95,7 +95,7 @@ public:
 /// <summary>
 /// An entry in the list of prefabs that can be spawned.
 /// </summary>
-API_STRUCT() struct FLAXENGINE_API PrefabSpawnEntry : ISerializable
+API_STRUCT() struct PLCT_API PrefabSpawnEntry : ISerializable
 {
     DECLARE_SCRIPTING_TYPE_MINIMAL(PrefabSpawnEntry)
     API_AUTO_SERIALIZATION();
@@ -114,7 +114,7 @@ API_STRUCT() struct FLAXENGINE_API PrefabSpawnEntry : ISerializable
 /// <summary>
 /// Takes a list of points and spawns a prefab at each point.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTSpawnPrefabAtPoints : public PLCTNodeEnd
+API_CLASS(Sealed) class PLCT_API PLCTSpawnPrefabAtPoints : public PLCTNodeEnd
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTSpawnPrefabAtPoints, PLCTNodeEnd);
     API_AUTO_SERIALIZATION();
@@ -139,7 +139,7 @@ public:
 /// <summary>
 /// Filters points by the random value assigned to them during creation.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTFilterByRandom : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTFilterByRandom : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByRandom, PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -170,7 +170,7 @@ public:
 /// <summary>
 /// Filters points by their normal vectors.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTFilterByNormal : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTFilterByNormal : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByNormal , PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -201,7 +201,7 @@ public:
 /// <summary>
 /// Set the transform of all the points.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTSetPointsTransform : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTSetPointsTransform : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTSetPointsTransform, PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -257,7 +257,7 @@ public:
 /// <summary>
 /// Transform the points, including an offset, and optional randomized offsets.
 /// </summary>
-API_CLASS(Sealed) class FLAXENGINE_API PLCTTransformPoints : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTTransformPoints : public PLCTNode
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTTransformPoints, PLCTNode);
     API_AUTO_SERIALIZATION();
@@ -352,7 +352,7 @@ public:
 /// <summary>
 /// Single surface list output cache.
 /// </summary>
-API_STRUCT() struct FLAXENGINE_API Arch0RuntimeCache
+API_STRUCT() struct PLCT_API Arch0RuntimeCache
 {
     DECLARE_SCRIPTING_TYPE_MINIMAL(Arch0RuntimeCache)
 
@@ -362,7 +362,7 @@ API_STRUCT() struct FLAXENGINE_API Arch0RuntimeCache
 /// <summary>
 /// Single points output cache.
 /// </summary>
-API_STRUCT() struct FLAXENGINE_API Arch2RuntimeCache
+API_STRUCT() struct PLCT_API Arch2RuntimeCache
 {
     DECLARE_SCRIPTING_TYPE_MINIMAL(Arch2RuntimeCache)
 

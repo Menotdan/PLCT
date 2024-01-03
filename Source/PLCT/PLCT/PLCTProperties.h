@@ -16,7 +16,7 @@
 /// <summary>
 /// PLCT Property class. Represents one property of a PLCT object.
 /// </summary>
-API_CLASS() class FLAXENGINE_API PLCTProperty : public ScriptingObject
+API_CLASS() class PLCT_API PLCTProperty : public ScriptingObject
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTProperty, ScriptingObject);
 
@@ -258,7 +258,7 @@ public:
 /// <summary>
 /// PLCT Property list storage. 
 /// </summary>
-API_CLASS() class FLAXENGINE_API PLCTPropertyStorage : public ScriptingObject
+API_CLASS() class PLCT_API PLCTPropertyStorage : public ScriptingObject
 {
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTPropertyStorage, ScriptingObject);
 
