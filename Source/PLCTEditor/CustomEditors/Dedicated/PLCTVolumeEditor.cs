@@ -3,7 +3,7 @@ using FlaxEditor.CustomEditors.Dedicated;
 using FlaxEditor.CustomEditors;
 using FlaxEditor.Scripting;
 
-namespace FlaxEditor.CustomEditors.Dedicated
+namespace PLCT
 {
     /// <summary>
     /// Dedicated custom editor for PLCTVolume objects.

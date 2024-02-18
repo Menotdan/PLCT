@@ -1,3 +1,4 @@
+using FlaxEditor;
 using FlaxEditor.Content;
 using FlaxEditor.CustomEditors;
 using FlaxEditor.GUI;
@@ -5,6 +6,7 @@ using FlaxEditor.SceneGraph;
 using FlaxEditor.Scripting;
 using FlaxEditor.Surface;
 using FlaxEditor.Viewport;
+using FlaxEditor.Windows.Assets;
 using FlaxEngine;
 using FlaxEngine.GUI;
 using System;
@@ -14,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace FlaxEditor.Windows.Assets
+namespace PLCT
 {
     /// <summary>
     /// The editor window for PLCT graphs.

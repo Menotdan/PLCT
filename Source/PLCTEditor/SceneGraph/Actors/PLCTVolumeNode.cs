@@ -6,8 +6,9 @@ using Real = System.Single;
 
 using FlaxEngine;
 using FlaxEngine.GUI;
+using FlaxEditor.SceneGraph;
 
-namespace FlaxEditor.SceneGraph.Actors
+namespace PLCT
 {
     /// <summary>
     /// Scene tree node for <see cref="PLCTVolume"/> actor type.
