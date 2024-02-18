@@ -15,6 +15,15 @@ PLCTVolume::PLCTVolume(const SpawnParams& params)
     LOG(Warning, "Created new PLCT volume.");
 }
 
+void GetAllActors(Array<Actor*>& actors, Actor* actor)
+{
+    for (Actor* child : actor->Children)
+    {
+        actors.Add(child);
+        GetAllActors(actors, child);
+    }
+}
+
 bool PLCTVolume::FindSurfaceAtIndex(PLCTSurface* surface, int index)
 {
     CHECK_RETURN(surface, false);
@@ -25,7 +34,8 @@ bool PLCTVolume::FindSurfaceAtIndex(PLCTSurface* surface, int index)
         if (readingScene == this->GetScene() && sceneIdx != -1)
             continue;
 
-        Array<Actor*> sceneActors = readingScene->GetChildren<Actor>();
+        Array<Actor*> sceneActors;
+        GetAllActors(sceneActors, readingScene);
         for (int actorIdx = 0; actorIdx < sceneActors.Count(); actorIdx++)
         {
             Actor* actor = sceneActors[actorIdx];

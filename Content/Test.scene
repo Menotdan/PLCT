@@ -83,6 +83,12 @@
 			}
 		},
 		{
+			"ID": "7fb2413d42b32499c3cf0683ad445571",
+			"TypeName": "FlaxEngine.BoxCollider",
+			"ParentID": "38055b0849da2e283e735bbc5441c5da",
+			"Name": "BoxCollider"
+		},
+		{
 			"ID": "10caf596450e3b40cf4b908d0efadee5",
 			"TypeName": "FlaxEngine.Camera",
 			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
