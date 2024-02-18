@@ -370,7 +370,7 @@ void PLCTTransformPoints::TransformPoints(Transform& transform)
     if (RandomizeRotation)
     {
         Quaternion rotationOffset = Quaternion::Lerp(RandomRotationMinimum, RandomRotationMaximum, Random::Rand());
-        transform.Orientation += rotationOffset;
+        transform.Orientation *= rotationOffset;
     }
 
     if (RandomizeScale)
