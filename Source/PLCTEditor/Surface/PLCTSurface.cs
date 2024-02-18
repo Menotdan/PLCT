@@ -26,7 +26,7 @@ namespace FlaxEditor.Surface
                 {
                     GroupID = 1,
                     Archetypes = PLCTArchetype.Nodes,
-                    Color = Color.Azure,
+                    Color = Color.Crimson,
                     Name = "PLCT",
                 }
             })
@@ -84,7 +84,7 @@ namespace FlaxEditor.Surface
                 {
                     GroupID = groupKey.Value,
                     Name = groupKey.Key,
-                    Color = new Color(4, 0, 222),
+                    Color = Color.Crimson,
                     Tag = version,
                     Archetypes = new List<NodeArchetype>(),
                 };
