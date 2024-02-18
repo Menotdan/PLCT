@@ -2,6 +2,7 @@ using FlaxEngine;
 using FlaxEditor.CustomEditors.Dedicated;
 using FlaxEditor.CustomEditors;
 using FlaxEditor.Scripting;
+using FlaxEditor;
 
 namespace PLCT
 {

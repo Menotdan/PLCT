@@ -17,7 +17,7 @@ namespace PLCT
     /// Contains archetypes for nodes from the PLCT Graph group.
     /// </summary>
     [HideInEditor]
-    public static class PLCT
+    public static class PLCTArchetype
     {
         /// <summary>
         /// Base class for PLCT Graph nodes wrapped inside <see cref="SurfaceNode" />.
@@ -225,12 +225,12 @@ namespace PLCT
             {
                 TypeID = 1,
                 Create = Node.Create,
-                Flags = NodeFlags.PLCTGraph | NodeFlags.NoSpawnViaGUI,
+                Flags = NodeFlags.NoSpawnViaGUI,
                 Title = "PLCT Node Get Surfaces",
                 DefaultValues = new object[]
                 {
                     string.Empty, // Type Name
-                    Utils.GetEmptyArray<byte>(), // Instance Data
+                    FlaxEngine.Utils.GetEmptyArray<byte>(), // Instance Data
                 },
                 Size = new Float2(100, 100),
                 Elements = new[]
@@ -242,12 +242,12 @@ namespace PLCT
             {
                 TypeID = 2,
                 Create = Node.Create,
-                Flags = NodeFlags.PLCTGraph | NodeFlags.NoSpawnViaGUI,
+                Flags = NodeFlags.NoSpawnViaGUI,
                 Title = "PLCT Node Surface Input",
                 DefaultValues = new object[]
                 {
                     string.Empty, // Type Name
-                    Utils.GetEmptyArray<byte>(), // Instance Data
+                    FlaxEngine.Utils.GetEmptyArray<byte>(), // Instance Data
                 },
                 Size = new Float2(100, 100),
                 Elements = new[]
@@ -259,12 +259,12 @@ namespace PLCT
             {
                 TypeID = 3,
                 Create = Node.Create,
-                Flags = NodeFlags.PLCTGraph | NodeFlags.NoSpawnViaGUI,
+                Flags = NodeFlags.NoSpawnViaGUI,
                 Title = "PLCT SurfaceSample",
                 DefaultValues = new object[]
                 {
                     string.Empty, // Type Name
-                    Utils.GetEmptyArray<byte>(), // Instance Data
+                    FlaxEngine.Utils.GetEmptyArray<byte>(), // Instance Data
                 },
                 Size = new Float2(100, 100),
                 Elements = new[]
@@ -277,12 +277,12 @@ namespace PLCT
             {
                 TypeID = 4,
                 Create = Node.Create,
-                Flags = NodeFlags.PLCTGraph | NodeFlags.NoSpawnViaGUI,
+                Flags = NodeFlags.NoSpawnViaGUI,
                 Title = "PLCT Points Output",
                 DefaultValues = new object[]
                 {
                     string.Empty, // Type Name
-                    Utils.GetEmptyArray<byte>(), // Instance Data
+                    FlaxEngine.Utils.GetEmptyArray<byte>(), // Instance Data
                 },
                 Size = new Float2(100, 100),
                 Elements = new[]
@@ -294,12 +294,12 @@ namespace PLCT
             {
                 TypeID = 5,
                 Create = Node.Create,
-                Flags = NodeFlags.PLCTGraph | NodeFlags.NoSpawnViaGUI,
+                Flags = NodeFlags.NoSpawnViaGUI,
                 Title = "PLCT Points Input and Output",
                 DefaultValues = new object[]
                 {
                     string.Empty, // Type Name
-                    Utils.GetEmptyArray<byte>(), // Instance Data
+                    FlaxEngine.Utils.GetEmptyArray<byte>(), // Instance Data
                 },
                 Size = new Float2(100, 100),
                 Elements = new[]

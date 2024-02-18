@@ -1,5 +1,5 @@
 #include "BoxColliderSurface.h"
-#include "../../Level/Actors/PLCTVolume.h"
+#include "../../Level/PLCTVolume.h"
 
 PLCTPoint* BoxColliderSurface::SampleXZ(Vector2 xz)
 {

@@ -5,7 +5,7 @@
 #include "Engine/Core/Delegate.h"
 #include "Engine/Threading/JobSystem.h"
 #include "Engine/Platform/Types.h"
-#include "../Level/Actors/PLCTVolume.h"
+#include "../Level/PLCTVolume.h"
 #include "Engine/Level/Prefabs/PrefabManager.h"
 #include "Engine/Level/Prefabs/Prefab.h"
 

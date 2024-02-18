@@ -1,0 +1,113 @@
+{
+	"ID": "015f45be464a8065eac11c9f1f177e1f",
+	"TypeName": "FlaxEngine.SceneAsset",
+	"EngineBuild": 6407,
+	"Data": [
+		{
+			"ID": "015f45be464a8065eac11c9f1f177e1f",
+			"TypeName": "FlaxEngine.Scene",
+			"LightmapSettings": {
+				"IndirectLightingIntensity": 1.0,
+				"GlobalObjectsScale": 1.0,
+				"ChartsPadding": 3,
+				"AtlasSize": 1024,
+				"BounceCount": 1,
+				"CompressLightmaps": true,
+				"UseGeometryWithNoMaterials": true,
+				"Quality": 10
+			}
+		},
+		{
+			"ID": "b583127d420eef7d5d1d37a8ad62a8af",
+			"TypeName": "FlaxEngine.DirectionalLight",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "Sun",
+			"Transform": {
+				"Translation": {
+					"X": 40.0,
+					"Y": 160.0,
+					"Z": 0.0
+				},
+				"Orientation": {
+					"X": 0.3826834559440613,
+					"Y": 0.0,
+					"Z": 0.0,
+					"W": 0.9238795042037964
+				}
+			}
+		},
+		{
+			"ID": "11eb75654fb29463b41745a54f1f70e6",
+			"TypeName": "FlaxEngine.Sky",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "Sky",
+			"Transform": {
+				"Translation": {
+					"X": 40.0,
+					"Y": 150.0,
+					"Z": 0.0
+				}
+			},
+			"Sun": "b583127d420eef7d5d1d37a8ad62a8af"
+		},
+		{
+			"ID": "f46d83164af4fd67067724b53cdd559d",
+			"TypeName": "FlaxEngine.SkyLight",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "SkyLight",
+			"Brightness": 2.5,
+			"CustomTexture": "c54410104ff39427bc11e5bc761d66b0"
+		},
+		{
+			"ID": "38055b0849da2e283e735bbc5441c5da",
+			"TypeName": "FlaxEngine.StaticModel",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "Floor",
+			"Transform": {
+				"Scale": {
+					"X": 4.0,
+					"Y": 0.5,
+					"Z": 4.0
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "1771b53343d461faacdf2c8581b1fdbb",
+						"ShadowsMode": 3,
+						"Visible": true,
+						"ReceiveDecals": true
+					}
+				]
+			}
+		},
+		{
+			"ID": "10caf596450e3b40cf4b908d0efadee5",
+			"TypeName": "FlaxEngine.Camera",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "Camera",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 150.0,
+					"Z": -300.0
+				}
+			}
+		},
+		{
+			"ID": "8b3be73a40e68d75d68d7da771e9d45f",
+			"TypeName": "PLCT.PLCTVolume",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "PLCTVolume",
+			"Graph": "940defff4bc5d0eaf464cbbe12684edb",
+			"GenerationContainer": "52377ddd4d448bd06c87ad9380c6ce3c"
+		},
+		{
+			"ID": "52377ddd4d448bd06c87ad9380c6ce3c",
+			"TypeName": "FlaxEngine.EmptyActor",
+			"ParentID": "8b3be73a40e68d75d68d7da771e9d45f",
+			"Name": "Generator"
+		}
+	]
+}

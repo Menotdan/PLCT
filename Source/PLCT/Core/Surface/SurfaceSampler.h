@@ -5,7 +5,7 @@
 #include "Engine/Scripting/ScriptingType.h"
 #include "Engine/Core/Config.h"
 #include "Engine/Core/RandomStream.h"
-#include "../../Level/Actors/PLCTVolume.h"
+#include "../../Level/PLCTVolume.h"
 #include "../PLCTSurface.h"
 #include "../PLCTPoint.h"
 

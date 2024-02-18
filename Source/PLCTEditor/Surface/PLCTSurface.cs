@@ -4,6 +4,7 @@ using FlaxEditor.Surface.ContextMenu;
 using FlaxEditor.Surface.Elements;
 using FlaxEngine;
 using FlaxEngine.GUI;
+using PLCT;
 using System;
 using System.Collections.Generic;
 using static FlaxEditor.Surface.VisjectSurface;
@@ -18,10 +19,17 @@ namespace FlaxEditor.Surface
     public class PLCTGraphSurface : VisjectSurface
     {
         private static NodesCache _nodesCache = new NodesCache(IterateNodesCache);
-
         /// <inheritdoc />
         public PLCTGraphSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo = null, SurfaceStyle style = null, List<GroupArchetype> groups = null)
-    : base(owner, onSave, undo, style, groups)
+    : base(owner, onSave, undo, style, new List<GroupArchetype>(1) {
+                new GroupArchetype()
+                {
+                    GroupID = 1,
+                    Archetypes = PLCTArchetype.Nodes,
+                    Color = Color.Azure,
+                    Name = "PLCT",
+                }
+            })
         {
         }
 
@@ -50,7 +58,7 @@ namespace FlaxEditor.Surface
 
         private static void DrawConnection(Float2 start, Float2 end, Color color, float thickness)
         {
-            Archetypes.Animation.StateMachineStateBase.DrawConnection(ref start, ref end, ref color);
+            SurfaceStyle.DrawStraightConnection(start, end, color);
         }
 
         private void OnActiveContextMenuVisibleChanged(Control activeCM)
@@ -69,7 +77,7 @@ namespace FlaxEditor.Surface
                 return;
 
             // Create group archetype
-            var groupKey = new KeyValuePair<string, ushort>("PLCT", 20);
+            var groupKey = new KeyValuePair<string, ushort>("PLCT", 1);
             if (!cache.TryGetValue(groupKey, out var group))
             {
                 group = new GroupArchetype
@@ -87,10 +95,10 @@ namespace FlaxEditor.Surface
             int archetypeIndex = nodeInstance.NodeArchetypeIndex();
 
             // Create node archetype
-            var node = (NodeArchetype)Archetypes.PLCT.Nodes[archetypeIndex].Clone();
+            var node = (NodeArchetype)PLCT.PLCTArchetype.Nodes[archetypeIndex].Clone();
             node.DefaultValues[0] = scriptType.TypeName;
             node.Flags &= ~NodeFlags.NoSpawnViaGUI;
-            node.Title = Archetypes.PLCT.Node.GetTitle(scriptType);
+            node.Title = PLCT.PLCTArchetype.Node.GetTitle(scriptType);
             node.Description = Editor.Instance.CodeDocs.GetTooltip(scriptType);
             ((IList<NodeArchetype>)group.Archetypes).Add(node);
         }
@@ -122,9 +130,8 @@ namespace FlaxEditor.Surface
                 return true;
 
             // PLCT Graph nodes only
-            return (nodeArchetype.Flags & NodeFlags.PLCTGraph) != 0 &&
-                   groupArchetype.GroupID == 20 &&
-                   base.CanUseNodeType(groupArchetype, nodeArchetype);
+            return (groupArchetype.GroupID == 1 &&
+                   base.CanUseNodeType(groupArchetype, nodeArchetype));
         }
 
         /*/// <inheritdoc />

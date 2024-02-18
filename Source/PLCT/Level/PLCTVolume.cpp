@@ -5,8 +5,8 @@
 #include "Engine/Level/Actor.h"
 #include "Engine/Level/Actors/EmptyActor.h"
 #include "Engine/Level/Level.h"
-#include "../../PLCT/PLCTSurface.h"
-#include "../../PLCT/PLCTGraph.h"
+#include "../Core/PLCTSurface.h"
+#include "../Core/PLCTGraph.h"
 #include <typeinfo>
 
 PLCTVolume::PLCTVolume(const SpawnParams& params)

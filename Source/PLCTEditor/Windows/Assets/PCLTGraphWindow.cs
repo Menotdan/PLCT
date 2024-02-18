@@ -98,7 +98,7 @@ namespace PLCT
             _toolstrip.AddSeparator();
             _toolstrip.AddButton(Editor.Icons.Search64, Editor.ContentFinding.ShowSearch).LinkTooltip($"Open content search tool ({inputOptions.Search})");
             _toolstrip.AddButton(editor.Icons.CenterView64, _surface.ShowWholeGraph).LinkTooltip("Show whole graph");
-            _toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(Utilities.Constants.DocsUrl + "manual/scripting/plct/plct-graphs/index.html")).LinkTooltip("See documentation to learn more");
+            //_toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(FlaxEditor.Utilities.Constants.DocsUrl + "manual/scripting/plct/plct-graphs/index.html")).LinkTooltip("See documentation to learn more");
 
             // Setup input actions
             InputActions.Add(options => options.Undo, _undo.PerformUndo);
@@ -142,7 +142,7 @@ namespace PLCT
             {
                 for (var i = 0; i < nodes.Count; i++)
                 {
-                    if (nodes[i] is Surface.Archetypes.PLCT.NodeBase node && node.IsSelected && node.Instance)
+                    if (nodes[i] is PLCTArchetype.NodeBase node && node.IsSelected && node.Instance)
                         selection.Add(node.Instance);
                 }
             }
@@ -160,7 +160,7 @@ namespace PLCT
                     // Sync instance data with surface node value storage
                     for (var j = 0; j < nodes.Count; j++)
                     {
-                        if (nodes[j] is Surface.Archetypes.PLCT.NodeBase node && node.Instance == instance)
+                        if (nodes[j] is PLCTArchetype.NodeBase node && node.Instance == instance)
                         {
                             node._isValueEditing = true;
                             node.SetValue(1, FlaxEngine.Json.JsonSerializer.SaveToBytes(instance));

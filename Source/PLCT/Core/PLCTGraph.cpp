@@ -1,7 +1,7 @@
 #include "PLCTGraph.h"
 #include "Engine/Content/Factories/BinaryAssetFactory.h"
 #include "Engine/Content/BinaryAsset.h"
-#include "../Level/Actors/PLCTVolume.h"
+#include "../Level/PLCTVolume.h"
 #include "Engine/Serialization/MemoryReadStream.h"
 
 #include "Engine/Content/JsonAsset.h"
@@ -16,9 +16,9 @@
 #include "Engine/Level/Level.h"
 #endif
 
-#define IS_PLCT_NODE(n) (n.GroupID == 20)
+#define IS_PLCT_NODE(n) (n.GroupID == 1)
 
-REGISTER_BINARY_ASSET(PLCTGraph, "FlaxEngine.PLCTGraph", false);
+REGISTER_BINARY_ASSET(PLCTGraph, "PLCT.PLCTGraph", false);
 
 PLCTGraphNode::~PLCTGraphNode() {
     SAFE_DELETE(Instance);

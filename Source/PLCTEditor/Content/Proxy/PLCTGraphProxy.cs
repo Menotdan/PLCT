@@ -1,12 +1,14 @@
 using System;
 using System.IO;
+using FlaxEditor;
+using FlaxEditor.Content;
 using FlaxEditor.Content.Thumbnails;
 using FlaxEditor.Windows;
 using FlaxEditor.Windows.Assets;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.Content
+namespace PLCT
 {
     /// <summary>
     /// A <see cref="PLCTGraph"/> asset proxy object.
@@ -45,7 +47,7 @@ namespace FlaxEditor.Content
         /// <inheritdoc />
         public override void Create(string outputPath, object arg)
         {
-            if (Editor.CreateAsset(Editor.NewAssetType.PLCTGraph, outputPath))
+            if (Editor.CreateAsset("PLCTGraph", outputPath))
                 throw new Exception("Failed to create new asset.");
         }
 

@@ -3,7 +3,7 @@
 #include "Engine/Level/Actors/BoxVolume.h"
 #include "Engine/Content/AssetReference.h"
 #include "Engine/Scripting/ScriptingObjectReference.h"
-#include "../../PLCT/PLCTProperties.h"
+#include "../Core/PLCTProperties.h"
 
 class PLCTSurface;
 class PLCTSurfaceList;
