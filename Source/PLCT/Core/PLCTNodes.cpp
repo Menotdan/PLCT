@@ -14,16 +14,24 @@
 #include "Surface/TerrainSurface.h"
 #include <Engine/Scripting/Internal/MainThreadManagedInvokeAction.h>
 
+#define CACHE_READ(archetype, member) \
+    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString()); \
+    if (!(Cached.Type == VariantType::Null)) \
+    { \
+        archetype* cache = (archetype*)Cached.AsPointer; \
+        output = Variant(cache->member); \
+        return true; \
+    }
+
+#define CACHE_WRITE(archetype, member, value) \
+    archetype* cache = New<archetype>(); \
+    cache->member = value; \
+    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
+
 bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "sample surface");
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch2RuntimeCache* cache = (Arch2RuntimeCache*)Cached.AsPointer;
-        output = Variant(cache->Points);
-        return true;
-    }
+    CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTSurfaceList* surfaces;
 
@@ -47,10 +55,7 @@ bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, in
     Delete(sampler);
     sampler = nullptr;
 
-    Arch2RuntimeCache* cache = New<Arch2RuntimeCache>();
-    cache->Points = points;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch2RuntimeCache, Points, points);
     output = Variant(points);
     LOG(Warning, "Sampled {0} points.", points->GetPoints().Count());
     return true;
@@ -59,13 +64,7 @@ bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, in
 bool PLCTGetBoxColliderSurfaces::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "get collider surfaces");
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch0RuntimeCache* cache = (Arch0RuntimeCache*) Cached.AsPointer;
-        output = Variant(cache->SurfaceList);
-        return true;
-    }
+    CACHE_READ(Arch0RuntimeCache, SurfaceList);
 
     BoxColliderSurface* baseInstance = New<BoxColliderSurface>();
     PLCTSurfaceList* surfaces = volume->FindAllSurfaces(baseInstance);
@@ -85,33 +84,21 @@ bool PLCTGetBoxColliderSurfaces::GetOutputBox(PLCTGraphNode& node, PLCTVolume* v
     }
     SAFE_DELETE(baseInstance);
 
-    Arch0RuntimeCache* cache = New<Arch0RuntimeCache>();
-    cache->SurfaceList = surfaces;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch0RuntimeCache, SurfaceList, surfaces);
     output = Variant(surfaces);
     return true;
 }
 
 bool PLCTGetTerrainSurfaces::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch0RuntimeCache* cache = (Arch0RuntimeCache*)Cached.AsPointer;
-        output = Variant(cache->SurfaceList);
-        return true;
-    }
+    CACHE_READ(Arch0RuntimeCache, SurfaceList);
 
     TerrainSurface* baseInstance = New<TerrainSurface>();
     PLCTSurfaceList* surfaces = volume->FindAllSurfaces(baseInstance);
     CHECK_RETURN(surfaces, false);
     SAFE_DELETE(baseInstance);
 
-    Arch0RuntimeCache* cache = New<Arch0RuntimeCache>();
-    cache->SurfaceList = surfaces;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch0RuntimeCache, SurfaceList, surfaces);
     output = Variant(surfaces);
     return true;
 }
@@ -162,7 +149,7 @@ bool PLCTDebugDrawPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
     return true;
 }
 
-#define PREFAB_SPAWN_JOBS 16
+#define PREFAB_SPAWN_JOBS 2
 struct PrefabToSpawn
 {
     Transform transform;
@@ -271,13 +258,7 @@ bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
 bool PLCTFilterByRandom::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "filter by random");
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch2RuntimeCache* cache = (Arch2RuntimeCache*)Cached.AsPointer;
-        output = Variant(cache->Points);
-        return true;
-    }
+    CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
 
@@ -307,10 +288,7 @@ bool PLCTFilterByRandom::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, i
         filteredPoints->GetPoints().Add(filteredPoint);
     }
 
-    Arch2RuntimeCache* cache = New<Arch2RuntimeCache>();
-    cache->Points = filteredPoints;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch2RuntimeCache, Points, filteredPoints);
     output = Variant(filteredPoints);
     return true;
 }
@@ -318,13 +296,7 @@ bool PLCTFilterByRandom::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, i
 bool PLCTFilterByNormal::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "filter by normal");
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch2RuntimeCache* cache = (Arch2RuntimeCache*)Cached.AsPointer;
-        output = Variant(cache->Points);
-        return true;
-    }
+    CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
 
@@ -356,10 +328,7 @@ bool PLCTFilterByNormal::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, i
         filteredPoints->GetPoints().Add(filteredPoint);
     }
 
-    Arch2RuntimeCache* cache = New<Arch2RuntimeCache>();
-    cache->Points = filteredPoints;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch2RuntimeCache, Points, filteredPoints);
     output = Variant(filteredPoints);
     return true;
 }
@@ -392,13 +361,7 @@ void PLCTTransformPoints::TransformPoints(Transform& transform)
 bool PLCTTransformPoints::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "transform points");
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch2RuntimeCache* cache = (Arch2RuntimeCache*)Cached.AsPointer;
-        output = Variant(cache->Points);
-        return true;
-    }
+    CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
 
@@ -424,10 +387,7 @@ bool PLCTTransformPoints::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, 
         transformedPoints->GetPoints().Add(transformedPoint);
     }
 
-    Arch2RuntimeCache* cache = New<Arch2RuntimeCache>();
-    cache->Points = transformedPoints;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch2RuntimeCache, Points, transformedPoints);
     output = Variant(transformedPoints);
     return true;
 }
@@ -453,13 +413,7 @@ void PLCTSetPointsTransform::TransformPoints(Transform& transform)
 bool PLCTSetPointsTransform::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "set points transform");
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString());
-    if (!(Cached.Type == VariantType::Null))
-    {
-        Arch2RuntimeCache* cache = (Arch2RuntimeCache*)Cached.AsPointer;
-        output = Variant(cache->Points);
-        return true;
-    }
+    CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
 
@@ -485,10 +439,7 @@ bool PLCTSetPointsTransform::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volum
         transformedPoints->GetPoints().Add(transformedPoint);
     }
 
-    Arch2RuntimeCache* cache = New<Arch2RuntimeCache>();
-    cache->Points = transformedPoints;
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
+    CACHE_WRITE(Arch2RuntimeCache, Points, transformedPoints);
     output = Variant(transformedPoints);
     return true;
 }
