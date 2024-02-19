@@ -8,11 +8,12 @@
 #include "../Level/PLCTVolume.h"
 #include "Engine/Level/Prefabs/PrefabManager.h"
 #include "Engine/Level/Prefabs/Prefab.h"
+#include "Engine/Physics/PhysicalMaterial.h"
 
 #include "PLCTProperties.h"
 #include "Surface/BoxColliderSurface.h"
 #include "Surface/TerrainSurface.h"
-#include <Engine/Scripting/Internal/MainThreadManagedInvokeAction.h>
+#include "Engine/Scripting/Internal/MainThreadManagedInvokeAction.h"
 
 #define CACHE_READ(archetype, member) \
     Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString()); \
@@ -441,5 +442,50 @@ bool PLCTSetPointsTransform::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volum
 
     CACHE_WRITE(Arch2RuntimeCache, Points, transformedPoints);
     output = Variant(transformedPoints);
+    return true;
+}
+
+bool PLCTFilterByPhysicalMaterial::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
+{
+    LOG(Warning, "filter by physmat");
+    CACHE_READ(Arch2RuntimeCache, Points);
+
+    PLCTPointsContainer* points;
+
+    VisjectGraphBox box = node.Boxes[0];
+    if (!GetPoints(box, this, volume, points))
+        return false;
+
+    PLCTPointsContainer* filteredPoints = New<PLCTPointsContainer>();
+
+    CHECK_RETURN(points, false);
+    for (int pointIdx = 0; pointIdx < points->GetPoints().Count(); pointIdx++)
+    {
+        PLCTPoint* point = points->GetPoints()[pointIdx];
+        CHECK_RETURN(point, false);
+        Variant physMat = point->GetProperties()->GetPropertyValue(TEXT("PhysMat"));
+        if (physMat.Type == VariantType::Null)
+        {
+            LOG(Warning, "welp");
+            continue;
+        }
+
+        String material = physMat.ToString();
+        bool matches = material == MaterialTag.ToString();
+        LOG(Warning, "Read: {0}", material);
+        LOG(Warning, "Required: {0}", MaterialTag.ToString());
+        if (Inverted)
+            matches = !matches;
+
+        if (!matches)
+            continue;
+        
+        PLCTPoint* filteredPoint = New<PLCTPoint>();
+        Memory::CopyItems<PLCTPoint>(filteredPoint, point, 1);
+        filteredPoints->GetPoints().Add(filteredPoint);
+    }
+
+    CACHE_WRITE(Arch2RuntimeCache, Points, filteredPoints);
+    output = Variant(filteredPoints);
     return true;
 }

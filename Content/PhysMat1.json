@@ -1,0 +1,15 @@
+{
+	"ID": "2fa3979d49df11cd699e14a4caa63bfa",
+	"TypeName": "FlaxEngine.PhysicalMaterial",
+	"EngineBuild": 6407,
+	"Data": {
+	"Friction": 0.7,
+	"FrictionCombineMode": 0,
+	"OverrideFrictionCombineMode": false,
+	"Restitution": 0.3,
+	"RestitutionCombineMode": 0,
+	"OverrideRestitutionCombineMode": false,
+	"Density": 1000.0,
+	"Tag": "Wood"
+}
+}
