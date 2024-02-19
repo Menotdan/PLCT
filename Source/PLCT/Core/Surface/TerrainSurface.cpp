@@ -1,6 +1,7 @@
 #include "BoxColliderSurface.h"
 #include "../../Level/PLCTVolume.h"
 #include "Engine/Terrain/TerrainPatch.h"
+#include "Engine/Physics/PhysicalMaterial.h"
 #include "TerrainSurface.h"
 
 bool PointInsdeTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 p)
@@ -35,6 +36,9 @@ PLCTPoint* TerrainSurface::SampleXZ(Vector2 coordinates)
 
     PLCTPoint* point = New<PLCTPoint>();
     point->SetTransform(result);
+    PhysicalMaterial* mat = hit.Material;
+    if (mat)
+        point->GetProperties()->SetPropertyValue(TEXT("PhysMat"), Variant(mat->Tag.ToString()));
 
     return point;
 }
