@@ -12,6 +12,7 @@
 #include "PLCTProperties.h"
 #include "Surface/BoxColliderSurface.h"
 #include "Surface/TerrainSurface.h"
+#include <Engine/Scripting/Internal/MainThreadManagedInvokeAction.h>
 
 bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
@@ -133,6 +134,16 @@ bool GetPoints(VisjectGraphBox box, PLCTNode* node, PLCTVolume* volume, PLCTPoin
     return true;
 }
 
+void DebugDrawer(PLCTPointsContainer* points, Color PointColor)
+{
+    for (int i = 0; i < points->GetPoints().Count(); i++)
+    {
+#if USE_EDITOR
+        DebugDraw::DrawSphere(BoundingSphere(points->GetPoints()[i]->GetTransform().Translation, 2), PointColor, 20.0f);
+#endif
+    }
+}
+
 bool PLCTDebugDrawPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
 {
     LOG(Warning, "debug draw");
@@ -143,12 +154,10 @@ bool PLCTDebugDrawPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
         return false;
 
     CHECK_RETURN(points, false);
-    for (int i = 0; i < points->GetPoints().Count(); i++)
-    {
-#if USE_EDITOR
-        DebugDraw::DrawSphere(BoundingSphere(points->GetPoints()[i]->GetTransform().Translation, 2), PointColor, 20.0f);
-#endif
-    }
+    MainThreadManagedInvokeAction::ParamsBuilder params;
+    params.AddParam(points);
+    params.AddParam(PointColor);
+    MainThreadManagedInvokeAction::Invoke(DebugDrawer, params);
 
     return true;
 }
