@@ -85,6 +85,8 @@ public:
     {
         PLCTProperty* property = New<PLCTProperty>();
         property->Name.Append(Name);
+        property->Data.SetType(Data.Type);
+
         if (Data.Type == VariantType(VariantType::Object))
         {
             // Copy underlying object
@@ -98,10 +100,8 @@ public:
         }
         else
         {
-            Platform::MemoryCopy(property->Data.AsData, Data.AsData, 24);
+            property->Data = Data;
         }
-
-        property->Data.SetType(Data.Type);
         return property;
     }
 
