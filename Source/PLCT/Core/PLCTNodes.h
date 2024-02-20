@@ -139,9 +139,9 @@ public:
 /// <summary>
 /// Filters points by the random value assigned to them during creation.
 /// </summary>
-API_CLASS(Sealed) class PLCT_API PLCTFilterByRandom : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTFilterByRandom : public PLCTNodeFilter
 {
-    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByRandom, PLCTNode);
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByRandom, PLCTNodeFilter);
     API_AUTO_SERIALIZATION();
 
 public:
@@ -157,22 +157,17 @@ public:
     API_FIELD(Attributes = "EditorOrder(20)")
     float MaxValue = 1;
 
-    int NodeArchetypeIndex() const override
-    {
-        return 4;
-    }
-
 public:
-    // [PLCTNode]
-    bool GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output) override;
+    // [PLCTNodeFilter]
+    bool CheckPoint(PLCTPoint* point) override;
 };
 
 /// <summary>
 /// Filters points by their normal vectors.
 /// </summary>
-API_CLASS(Sealed) class PLCT_API PLCTFilterByNormal : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTFilterByNormal : public PLCTNodeFilter
 {
-    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByNormal , PLCTNode);
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByNormal , PLCTNodeFilter);
     API_AUTO_SERIALIZATION();
 
 public:
@@ -188,14 +183,9 @@ public:
     API_FIELD(Attributes = "EditorOrder(20)")
     Vector3 MaxValue = Vector3::One;
 
-    int NodeArchetypeIndex() const override
-    {
-        return 4;
-    }
-
 public:
-    // [PLCTNode]
-    bool GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output) override;
+    // [PLCTNodeFilter]
+    bool CheckPoint(PLCTPoint* point) override;
 };
 
 /// <summary>
@@ -349,9 +339,9 @@ public:
 /// <summary>
 /// Filters points by the physical material on the surface they were sampled from.
 /// </summary>
-API_CLASS(Sealed) class PLCT_API PLCTFilterByPhysicalMaterial : public PLCTNode
+API_CLASS(Sealed) class PLCT_API PLCTFilterByPhysicalMaterial : public PLCTNodeFilter
 {
-    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByPhysicalMaterial, PLCTNode);
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterByPhysicalMaterial, PLCTNodeFilter);
     API_AUTO_SERIALIZATION();
 
 public:
@@ -367,14 +357,9 @@ public:
     API_FIELD(Attributes = "EditorOrder(20)")
     bool Inverted;
 
-    int NodeArchetypeIndex() const override
-    {
-        return 4;
-    }
-
 public:
-    // [PLCTNode]
-    bool GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output) override;
+    // [PLCTNodeFilter]
+    bool CheckPoint(PLCTPoint* point) override;
 };
 
 /* Node Runtime Cache Types */

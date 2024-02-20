@@ -5,9 +5,23 @@
 #include "Engine/Core/Types/Variant.h"
 #include "PLCTTypes.h"
 #include "PLCTGraph.h"
+#include "PLCTPoint.h"
+
+#define CACHE_READ(archetype, member) \
+    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString()); \
+    if (!(Cached.Type == VariantType::Null)) \
+    { \
+        archetype* cache = (archetype*)Cached.AsPointer; \
+        output = Variant(cache->member); \
+        return true; \
+    }
+
+#define CACHE_WRITE(archetype, member, value) \
+    archetype* cache = New<archetype>(); \
+    cache->member = value; \
+    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
 
 class PLCTVolume;
-
 /// <summary>
 /// Base class for PLCT Graph nodes.
 /// </summary>
@@ -48,6 +62,23 @@ public:
         return true;
     }
 
+    bool GetPoints(VisjectGraphBox box, PLCTNode* node, PLCTVolume* volume, PLCTPointsContainer*& outPoints)
+    {
+        PLCTGraphNode* connectedNode;
+        ScriptingObject* object;
+
+        CHECK_RETURN(node, false);
+        if (!node->GetObjectFromInputBox(box, connectedNode, volume, object))
+            return false;
+
+        CHECK_RETURN(object, false);
+        if (!object->Is<PLCTPointsContainer>())
+            return false;
+
+        outPoints = (PLCTPointsContainer*)object;
+        return true;
+    }
+
     bool GetObjectFromInputBox(VisjectGraphBox box, PLCTGraphNode*& outConnectedNode, PLCTVolume* volume, ScriptingObject*& objectOut)
     {
         VisjectGraphBox* connectedBox;
@@ -78,4 +109,25 @@ public:
     {
         return false;
     }
+};
+
+/// <summary>
+/// Base class for PLCT Graph nodes that have no output, this is used to evaluate the graph backwards properly.
+/// </summary>
+API_CLASS(Abstract) class PLCT_API PLCTNodeFilter : public PLCTNode
+{
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTNodeFilter, PLCTNode);
+
+public:
+    virtual bool CheckPoint(PLCTPoint* point)
+    {
+        return false;
+    }
+
+    int NodeArchetypeIndex() const override
+    {
+        return 4;
+    }
+
+    bool GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output) override;
 };

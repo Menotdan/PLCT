@@ -308,6 +308,24 @@ namespace PLCT
                     NodeElementArchetype.Factory.Output(0, "Points", new ScriptType(typeof(PLCTPointsContainer)), 1),
                 }
             },
+            new NodeArchetype
+            {
+                TypeID = 6,
+                Create = Node.Create,
+                Flags = NodeFlags.NoSpawnViaGUI,
+                Title = "PLCT Node Surface Input Surface Output",
+                DefaultValues = new object[]
+                {
+                    string.Empty, // Type Name
+                    FlaxEngine.Utils.GetEmptyArray<byte>(), // Instance Data
+                },
+                Size = new Float2(100, 100),
+                Elements = new[]
+                {
+                    NodeElementArchetype.Factory.Input(0, "Surface", true, new ScriptType(typeof(PLCTSurfaceList)), 0),
+                    NodeElementArchetype.Factory.Output(0, "Surface", new ScriptType(typeof(PLCTSurfaceList)), 1),
+                }
+            },
         };
     }
 }

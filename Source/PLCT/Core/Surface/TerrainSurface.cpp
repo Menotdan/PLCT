@@ -67,3 +67,8 @@ bool TerrainSurface::CheckActorMatchesAndSet(Actor* actor)
 
     return false;
 }
+
+bool TerrainSurface::CheckSurfaceTag(Tag tag)
+{
+    return _actor->HasTag(tag);
+}

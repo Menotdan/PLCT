@@ -15,20 +15,6 @@
 #include "Surface/TerrainSurface.h"
 #include "Engine/Scripting/Internal/MainThreadManagedInvokeAction.h"
 
-#define CACHE_READ(archetype, member) \
-    Variant Cached = volume->RuntimeCache->GetPropertyValue(GetID().ToString()); \
-    if (!(Cached.Type == VariantType::Null)) \
-    { \
-        archetype* cache = (archetype*)Cached.AsPointer; \
-        output = Variant(cache->member); \
-        return true; \
-    }
-
-#define CACHE_WRITE(archetype, member, value) \
-    archetype* cache = New<archetype>(); \
-    cache->member = value; \
-    volume->RuntimeCache->SetPropertyValue(GetID().ToString(), Variant(cache));
-
 bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
     LOG(Warning, "sample surface");
@@ -101,24 +87,6 @@ bool PLCTGetTerrainSurfaces::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volum
 
     CACHE_WRITE(Arch0RuntimeCache, SurfaceList, surfaces);
     output = Variant(surfaces);
-    return true;
-}
-
-
-bool GetPoints(VisjectGraphBox box, PLCTNode* node, PLCTVolume* volume, PLCTPointsContainer*& outPoints)
-{
-    PLCTGraphNode* connectedNode;
-    ScriptingObject* object;
-
-    CHECK_RETURN(node, false);
-    if (!node->GetObjectFromInputBox(box, connectedNode, volume, object))
-        return false;
-
-    CHECK_RETURN(object, false);
-    if (!object->Is<PLCTPointsContainer>())
-        return false;
-
-    outPoints = (PLCTPointsContainer*)object;
     return true;
 }
 
@@ -256,81 +224,35 @@ bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
     return true;
 }
 
-bool PLCTFilterByRandom::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
+bool PLCTFilterByRandom::CheckPoint(PLCTPoint* point)
 {
-    LOG(Warning, "filter by random");
-    CACHE_READ(Arch2RuntimeCache, Points);
-
-    PLCTPointsContainer* points;
-
-    VisjectGraphBox box = node.Boxes[0];
-    if (!GetPoints(box, this, volume, points))
+    Variant randomValue = point->GetProperties()->GetPropertyValue(TEXT("Random"));
+    if (randomValue.Type == VariantType::Null)
         return false;
 
-    PLCTPointsContainer* filteredPoints = New<PLCTPointsContainer>();
-
-    CHECK_RETURN(points, false);
-    for (int pointIdx = 0; pointIdx < points->GetPoints().Count(); pointIdx++)
+    if (randomValue.AsFloat < MinValue ||
+        randomValue.AsFloat > MaxValue)
     {
-        PLCTPoint* point = points->GetPoints()[pointIdx];
-        CHECK_RETURN(point, false);
-        Variant randomValue = point->GetProperties()->GetPropertyValue(TEXT("Random"));
-        if (randomValue.Type == VariantType::Null)
-            continue;
-
-        if (randomValue.AsFloat < MinValue ||
-            randomValue.AsFloat > MaxValue)
-        {
-            continue;
-        }
-
-        PLCTPoint* filteredPoint = New<PLCTPoint>();
-        Memory::CopyItems<PLCTPoint>(filteredPoint, point, 1);
-        filteredPoints->GetPoints().Add(filteredPoint);
+        return false;
     }
 
-    CACHE_WRITE(Arch2RuntimeCache, Points, filteredPoints);
-    output = Variant(filteredPoints);
     return true;
 }
 
-bool PLCTFilterByNormal::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
+bool PLCTFilterByNormal::CheckPoint(PLCTPoint* point)
 {
-    LOG(Warning, "filter by normal");
-    CACHE_READ(Arch2RuntimeCache, Points);
-
-    PLCTPointsContainer* points;
-
-    VisjectGraphBox box = node.Boxes[0];
-    if (!GetPoints(box, this, volume, points))
+    Variant normalVector = point->GetProperties()->GetPropertyValue(TEXT("Normal"));
+    if (normalVector.Type == VariantType::Null)
         return false;
 
-    PLCTPointsContainer* filteredPoints = New<PLCTPointsContainer>();
-
-    CHECK_RETURN(points, false);
-    for (int pointIdx = 0; pointIdx < points->GetPoints().Count(); pointIdx++)
+    Vector3 normal = normalVector.AsVector3();
+    if (normal.X > MaxValue.X || normal.X < MinValue.X
+        || normal.Y > MaxValue.Y || normal.Y < MinValue.Y
+        || normal.Z > MaxValue.Z || normal.Z < MinValue.Z)
     {
-        PLCTPoint* point = points->GetPoints()[pointIdx];
-        CHECK_RETURN(point, false);
-        Variant normalVector = point->GetProperties()->GetPropertyValue(TEXT("Normal"));
-        if (normalVector.Type == VariantType::Null)
-            continue;
-
-        Vector3 normal = normalVector.AsVector3();
-        if (normal.X > MaxValue.X || normal.X < MinValue.X
-            || normal.Y > MaxValue.Y || normal.Y < MinValue.Y
-            || normal.Z > MaxValue.Z || normal.Z < MinValue.Z)
-        {
-            continue;
-        }
-
-        PLCTPoint* filteredPoint = New<PLCTPoint>();
-        Memory::CopyItems<PLCTPoint>(filteredPoint, point, 1);
-        filteredPoints->GetPoints().Add(filteredPoint);
+        return false;
     }
 
-    CACHE_WRITE(Arch2RuntimeCache, Points, filteredPoints);
-    output = Variant(filteredPoints);
     return true;
 }
 
@@ -445,47 +367,23 @@ bool PLCTSetPointsTransform::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volum
     return true;
 }
 
-bool PLCTFilterByPhysicalMaterial::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
+bool PLCTFilterByPhysicalMaterial::CheckPoint(PLCTPoint* point)
 {
-    LOG(Warning, "filter by physmat");
-    CACHE_READ(Arch2RuntimeCache, Points);
-
-    PLCTPointsContainer* points;
-
-    VisjectGraphBox box = node.Boxes[0];
-    if (!GetPoints(box, this, volume, points))
-        return false;
-
-    PLCTPointsContainer* filteredPoints = New<PLCTPointsContainer>();
-
-    CHECK_RETURN(points, false);
-    for (int pointIdx = 0; pointIdx < points->GetPoints().Count(); pointIdx++)
+    Variant physMat = point->GetProperties()->GetPropertyValue(TEXT("PhysMat"));
+    if (physMat.Type == VariantType::Null)
     {
-        PLCTPoint* point = points->GetPoints()[pointIdx];
-        CHECK_RETURN(point, false);
-        Variant physMat = point->GetProperties()->GetPropertyValue(TEXT("PhysMat"));
-        if (physMat.Type == VariantType::Null)
-        {
-            LOG(Warning, "welp");
-            continue;
-        }
-
-        String material = physMat.ToString();
-        bool matches = material == MaterialTag.ToString();
-        LOG(Warning, "Read: {0}", material);
-        LOG(Warning, "Required: {0}", MaterialTag.ToString());
-        if (Inverted)
-            matches = !matches;
-
-        if (!matches)
-            continue;
-        
-        PLCTPoint* filteredPoint = New<PLCTPoint>();
-        Memory::CopyItems<PLCTPoint>(filteredPoint, point, 1);
-        filteredPoints->GetPoints().Add(filteredPoint);
+        return false;
     }
 
-    CACHE_WRITE(Arch2RuntimeCache, Points, filteredPoints);
-    output = Variant(filteredPoints);
+    String material = physMat.ToString();
+    bool matches = material == MaterialTag.ToString();
+    LOG(Warning, "Read: {0}", material);
+    LOG(Warning, "Required: {0}", MaterialTag.ToString());
+    if (Inverted)
+        matches = !matches;
+
+    if (!matches)
+        return false;
+
     return true;
 }

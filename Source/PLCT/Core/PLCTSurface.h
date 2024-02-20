@@ -63,6 +63,16 @@ public:
     }
 
     /// <summary>
+    /// Check that the surface has the passed tag.
+    /// </summary>
+    /// <param name="tag">The tag to check for.</param>
+    /// <returns>True if tag is present, otherwise false.</returns>
+    API_FUNCTION() virtual bool CheckSurfaceTag(Tag tag)
+    {
+        return false;
+    }
+
+    /// <summary>
     /// Gets/Sets the volume associated with this surface.
     /// </summary>
     API_PROPERTY() PLCTVolume* GetVolume()

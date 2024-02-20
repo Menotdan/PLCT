@@ -57,3 +57,8 @@ bool BoxColliderSurface::CheckActorMatchesAndSet(Actor* actor)
 
     return false;
 }
+
+bool BoxColliderSurface::CheckSurfaceTag(Tag tag)
+{
+    return _actor->HasTag(tag);
+}

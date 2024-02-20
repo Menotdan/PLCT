@@ -18,6 +18,7 @@ public:
     PLCTPoint* SampleXZ(Vector2 coordinates) override;
     bool SampleXZ(Vector2 coordinates, PLCTPointsContainer* targetContainer) override;
     bool CheckActorMatchesAndSet(Actor* actor) override;
+    bool CheckSurfaceTag(Tag tag) override;
 
 private:
     Terrain* _actor = nullptr;
