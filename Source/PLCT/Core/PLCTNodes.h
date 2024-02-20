@@ -362,6 +362,32 @@ public:
     bool CheckPoint(PLCTPoint* point) override;
 };
 
+/// <summary>
+/// Filters points by the physical material on the surface they were sampled from.
+/// </summary>
+API_CLASS(Sealed) class PLCT_API PLCTFilterSurfaceByTag : public PLCTNodeFilterSurface
+{
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTFilterSurfaceByTag, PLCTNodeFilterSurface);
+    API_AUTO_SERIALIZATION();
+
+public:
+    /// <summary>
+    /// The tag to compare.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(10)")
+    Tag Tag = Tag::Tag();
+
+    /// <summary>
+    /// Whether to invert the check.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(20)")
+    bool Inverted;
+
+public:
+    // [PLCTNodeFilterSurface]
+    bool CheckSurface(PLCTSurface* surface) override;
+};
+
 /* Node Runtime Cache Types */
 /* This allows nodes to save their output once it runs. */
 

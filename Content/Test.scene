@@ -240,6 +240,48 @@
 					]
 				}
 			]
+		},
+		{
+			"ID": "ce42e5e844d62e1efa0f66a2e286d58c",
+			"TypeName": "FlaxEngine.StaticModel",
+			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
+			"Name": "Floor 0",
+			"Transform": {
+				"Translation": {
+					"X": -380.2994384765625,
+					"Y": 0.0,
+					"Z": -130.612548828125
+				},
+				"Orientation": {
+					"X": 0.050904806703329089,
+					"Y": 0.3828393220901489,
+					"Z": -0.4563787877559662,
+					"W": 0.8015990853309631
+				},
+				"Scale": {
+					"X": 4.0,
+					"Y": 3.711198091506958,
+					"Z": 4.185271263122559
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "1771b53343d461faacdf2c8581b1fdbb",
+						"ShadowsMode": 3,
+						"Visible": true,
+						"ReceiveDecals": true
+					}
+				]
+			}
+		},
+		{
+			"ID": "8286373841f2892a0a28689734f36a69",
+			"TypeName": "FlaxEngine.BoxCollider",
+			"ParentID": "ce42e5e844d62e1efa0f66a2e286d58c",
+			"Name": "BoxCollider",
+			"Tag": "Wood"
 		}
 	]
 }

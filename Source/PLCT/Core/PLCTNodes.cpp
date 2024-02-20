@@ -39,6 +39,7 @@ bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, in
     sampler->SetSurfaceList(surfaces);
 
     PLCTPointsContainer* points = sampler->SampleXZ();
+    CHECK_RETURN(points, false);
     Delete(sampler);
     sampler = nullptr;
 
@@ -386,4 +387,13 @@ bool PLCTFilterByPhysicalMaterial::CheckPoint(PLCTPoint* point)
         return false;
 
     return true;
+}
+
+bool PLCTFilterSurfaceByTag::CheckSurface(PLCTSurface* surface)
+{
+    bool tagExists = surface->CheckSurfaceTag(Tag);
+    if (Inverted)
+        tagExists = !Inverted;
+
+    return tagExists;
 }

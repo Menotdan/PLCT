@@ -5,6 +5,7 @@
 #include "Engine/Core/Types/Variant.h"
 #include "PLCTTypes.h"
 #include "PLCTGraph.h"
+#include "PLCTSurface.h"
 #include "PLCTPoint.h"
 
 #define CACHE_READ(archetype, member) \
@@ -79,6 +80,23 @@ public:
         return true;
     }
 
+    bool GetSurfaces(VisjectGraphBox box, PLCTNode* node, PLCTVolume* volume, PLCTSurfaceList*& outSurfaces)
+    {
+        PLCTGraphNode* connectedNode;
+        ScriptingObject* object;
+
+        CHECK_RETURN(node, false);
+        if (!node->GetObjectFromInputBox(box, connectedNode, volume, object))
+            return false;
+
+        CHECK_RETURN(object, false);
+        if (!object->Is<PLCTSurfaceList>())
+            return false;
+
+        outSurfaces = (PLCTSurfaceList*)object;
+        return true;
+    }
+
     bool GetObjectFromInputBox(VisjectGraphBox box, PLCTGraphNode*& outConnectedNode, PLCTVolume* volume, ScriptingObject*& objectOut)
     {
         VisjectGraphBox* connectedBox;
@@ -112,7 +130,7 @@ public:
 };
 
 /// <summary>
-/// Base class for PLCT Graph nodes that have no output, this is used to evaluate the graph backwards properly.
+/// Base class for PLCT Graph nodes that filter points.
 /// </summary>
 API_CLASS(Abstract) class PLCT_API PLCTNodeFilter : public PLCTNode
 {
@@ -127,6 +145,27 @@ public:
     int NodeArchetypeIndex() const override
     {
         return 4;
+    }
+
+    bool GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output) override;
+};
+
+/// <summary>
+/// Base class for PLCT Graph nodes that filter surfaces.
+/// </summary>
+API_CLASS(Abstract) class PLCT_API PLCTNodeFilterSurface : public PLCTNode
+{
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTNodeFilterSurface, PLCTNode);
+
+public:
+    virtual bool CheckSurface(PLCTSurface* surface)
+    {
+        return false;
+    }
+
+    int NodeArchetypeIndex() const override
+    {
+        return 5;
     }
 
     bool GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output) override;
