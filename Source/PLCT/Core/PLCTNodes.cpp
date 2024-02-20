@@ -378,8 +378,8 @@ bool PLCTFilterByPhysicalMaterial::CheckPoint(PLCTPoint* point)
 
     String material = physMat.ToString();
     bool matches = material == MaterialTag.ToString();
-    LOG(Warning, "Read: {0}", material);
-    LOG(Warning, "Required: {0}", MaterialTag.ToString());
+    //LOG(Warning, "Read: {0}", material);
+    //LOG(Warning, "Required: {0}", MaterialTag.ToString());
     if (Inverted)
         matches = !matches;
 

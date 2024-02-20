@@ -25,11 +25,7 @@ bool PLCTNodeFilter::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int i
         if (!CheckPoint(point))
             continue;
 
-        PLCTPoint* filteredPoint = New<PLCTPoint>();
-        Guid id = filteredPoint->GetID();
-        Memory::CopyItems<PLCTPoint>(filteredPoint, point, 1);
-        filteredPoint->ChangeID(id);
-
+        PLCTPoint* filteredPoint = point->Copy();
         filteredPoints->GetPoints().Add(filteredPoint);
     }
 
@@ -61,7 +57,6 @@ bool PLCTNodeFilterSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume
             continue;
 
         // Fun memory hacks
-        
         ScriptingType type = surface->GetType();
         PLCTSurface* filteredSurface = (PLCTSurface*) Scripting::NewObject(type.GetHandle());
         Guid id = filteredSurface->GetID();

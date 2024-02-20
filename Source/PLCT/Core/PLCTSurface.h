@@ -103,7 +103,12 @@ API_CLASS() class PLCT_API PLCTSurfaceList : public ScriptingObject
 public:
     ~PLCTSurfaceList()
     {
-        _surfaces.ClearDelete();
+        for (auto surface : _surfaces)
+        {
+            if (surface)
+                Delete(surface);
+        }
+        _surfaces.Clear();
     }
 
     /// <summary>

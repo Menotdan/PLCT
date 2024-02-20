@@ -1,12 +1,14 @@
 #include "PLCTVolume.h"
 #include "Engine/Core/Log.h"
 #include "Engine/Threading/JobSystem.h"
+#include "Engine/Core/Collections/Array.h"
 #include "Engine/Level/Scene/Scene.h"
 #include "Engine/Level/Actor.h"
 #include "Engine/Level/Actors/EmptyActor.h"
 #include "Engine/Level/Level.h"
 #include "../Core/PLCTSurface.h"
 #include "../Core/PLCTGraph.h"
+#include "../Core/PLCTProperties.h"
 #include <typeinfo>
 
 PLCTVolume::PLCTVolume(const SpawnParams& params)
@@ -85,6 +87,8 @@ void PLCTVolume::CleanupThread(int32 id)
     Platform::AtomicStore(&_cleanupThreadID, -1);
 }
 
+Array<Guid> property_tracker::properties;
+
 bool PLCTVolume::Generate()
 {
     if (!(Graph && !Graph->WaitForLoaded()))
@@ -93,10 +97,12 @@ bool PLCTVolume::Generate()
         return false;
     }
 
+    LOG(Warning, "Properties remaining before: {0}", property_tracker::properties.Count());
     if (RuntimeCache)
     {
-        SAFE_DELETE(RuntimeCache);
+        Delete(RuntimeCache);
     }
+    LOG(Warning, "Properties remaining: {0}", property_tracker::properties.Count());
     RuntimeCache = New<PLCTPropertyStorage>();
     CHECK_RETURN(RuntimeCache, false);
 

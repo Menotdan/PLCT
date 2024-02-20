@@ -394,9 +394,15 @@ public:
 /// <summary>
 /// Single surface list output cache.
 /// </summary>
-API_STRUCT() struct PLCT_API Arch0RuntimeCache
+API_STRUCT() struct PLCT_API Arch0RuntimeCache : ScriptingObject
 {
-    DECLARE_SCRIPTING_TYPE_MINIMAL(Arch0RuntimeCache)
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(Arch0RuntimeCache, ScriptingObject);
+    ~Arch0RuntimeCache()
+    {
+        if (SurfaceList)
+            Delete(SurfaceList);
+        SurfaceList = nullptr;
+    }
 
     PLCTSurfaceList* SurfaceList;
 };
@@ -404,9 +410,15 @@ API_STRUCT() struct PLCT_API Arch0RuntimeCache
 /// <summary>
 /// Single points output cache.
 /// </summary>
-API_STRUCT() struct PLCT_API Arch2RuntimeCache
+API_STRUCT() struct PLCT_API Arch2RuntimeCache : ScriptingObject
 {
-    DECLARE_SCRIPTING_TYPE_MINIMAL(Arch2RuntimeCache)
+    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(Arch2RuntimeCache, ScriptingObject);
+    ~Arch2RuntimeCache()
+    {
+        if (Points)
+            Delete(Points);
+        Points = nullptr;
+    }
 
     PLCTPointsContainer* Points;
 };

@@ -10,7 +10,7 @@ API_CLASS() class PLCT_API PLCTPoint : public ScriptingObject
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTPoint, ScriptingObject);
 
 public:
-    ~PLCTPoint() = default;
+    //~PLCTPoint() = default;
 
     /// <summary>
     /// Gets the properties of the point.
@@ -45,6 +45,14 @@ public:
         return transform;
     }
 
+    API_FUNCTION() PLCTPoint* Copy()
+    {
+        PLCTPoint* point = New<PLCTPoint>();
+        _properties.CopyInto(point->_properties);
+        
+        return point;
+    }
+
 private:
     PLCTPropertyStorage _properties;
 };
@@ -59,7 +67,12 @@ API_CLASS() class PLCT_API PLCTPointsContainer : public ScriptingObject
 public:
     ~PLCTPointsContainer()
     {
-        _points.ClearDelete();
+        for (auto point : _points)
+        {
+            if (point)
+                Delete(point);
+        }
+        _points.Clear();
     }
 
     /// <summary>

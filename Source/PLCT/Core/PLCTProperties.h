@@ -10,20 +10,41 @@
 #include "Engine/Core/Types/Variant.h"
 #include "Engine/Core/Collections/Array.h"
 #include "Engine/Core/Log.h"
+#include "Engine/Scripting/Scripting.h"
 #include "Engine/Scripting/ScriptingType.h"
 #include "Engine/Scripting/ScriptingObject.h"
+
+class property_tracker
+{
+public:
+    static Array<Guid> properties;
+};
 
 /// <summary>
 /// PLCT Property class. Represents one property of a PLCT object.
 /// </summary>
 API_CLASS() class PLCT_API PLCTProperty : public ScriptingObject
 {
-    DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTProperty, ScriptingObject);
+    //DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTProperty, ScriptingObject);
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(type);
+    static PLCTProperty* Spawn(const SpawnParams& params) { return ::New<PLCTProperty>(params); }
+    explicit PLCTProperty(const SpawnParams& params) : ScriptingObject(params)
+    {
+        property_tracker::properties.Add(params.ID);
+    }
+    explicit PLCTProperty() : PLCTProperty(SpawnParams(Guid::New(), PLCTProperty::TypeInitializer)) {}
 
 public:
     ~PLCTProperty()
     {
-        Data.DeleteValue();
+        property_tracker::properties.Remove(GetID());
+        if (Data.Type == VariantType(VariantType::Object))
+        {
+            Delete(Data.AsObject);
+            Data.AsObject = nullptr;
+        }
+
+        Data.SetType(VariantType(VariantType::Null));
     }
 
     /// <summary>
@@ -40,15 +61,15 @@ public:
     /// Sets a new value for the property, ignoring it if the type would change.
     /// </summary>
     /// <param name="value">The new value of the property.</param>
-    API_FUNCTION() FORCE_INLINE void SetValue(Variant value)
+    API_FUNCTION() void SetValue(Variant value)
     {
-        if (value.Type == VariantType::Null)
+        if (value.Type == VariantType(VariantType::Null))
         {
             LOG(Warning, "PLCT Property '{0}' set as null! (Ignored)", Name);
             return;
         }
 
-        if (!(Data.Type == VariantType::Null))
+        if (!(Data.Type == VariantType(VariantType::Null)))
         {
             if (!(Data.Type == value.Type))
             {
@@ -58,6 +79,30 @@ public:
         }
 
         Data = value;
+    }
+
+    API_FUNCTION() PLCTProperty* Copy()
+    {
+        PLCTProperty* property = New<PLCTProperty>();
+        property->Name.Append(Name);
+        if (Data.Type == VariantType(VariantType::Object))
+        {
+            // Copy underlying object
+            ScriptingType type = Data.AsObject->GetType();
+            ScriptingObject* object = Scripting::NewObject(type.GetHandle());
+            Guid id = object->GetID();
+            Platform::MemoryCopy(object, Data.AsObject, type.Size);
+            object->ChangeID(id);
+
+            property->Data.AsObject = object;
+        }
+        else
+        {
+            Platform::MemoryCopy(property->Data.AsData, Data.AsData, 24);
+        }
+
+        property->Data.SetType(Data.Type);
+        return property;
     }
 
 public:
@@ -265,7 +310,12 @@ API_CLASS() class PLCT_API PLCTPropertyStorage : public ScriptingObject
 public:
     ~PLCTPropertyStorage()
     {
-        _properties.ClearDelete();
+        for (auto property : _properties)
+        {
+            if (property)
+                Delete(property);
+        }
+        _properties.Clear();
     }
 
     /// <summary>
@@ -304,7 +354,7 @@ public:
 
         PLCTProperty* newProperty = New<PLCTProperty>();
         newProperty->Data = Variant(nullptr);
-        newProperty->Name = name;
+        newProperty->Name.Append(name);
         _properties.Add(newProperty);
 
         return newProperty;
@@ -338,6 +388,14 @@ public:
         property->SetValue(value);
 
         return true;
+    }
+
+    API_FUNCTION() FORCE_INLINE void CopyInto(PLCTPropertyStorage& output)
+    {
+        for (auto property : _properties)
+        {
+            output._properties.Add(property->Copy());
+        }
     }
 
 private:

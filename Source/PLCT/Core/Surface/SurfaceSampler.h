@@ -124,9 +124,9 @@ public:
         PLCTPointsContainer* container = New<PLCTPointsContainer>();
         bool foundAnyPoints = false;
 
-        for (int surfIdx = 0; surfIdx < _surfaces.GetSurfaces().Count(); surfIdx++)
+        for (int surfIdx = 0; surfIdx < _surfaces->GetSurfaces().Count(); surfIdx++)
         {
-            foundAnyPoints = SampleXZ(_surfaces.GetSurfaces()[surfIdx], container) || foundAnyPoints;
+            foundAnyPoints = SampleXZ(_surfaces->GetSurfaces()[surfIdx], container) || foundAnyPoints;
         }
 
         return foundAnyPoints ? container : nullptr;
@@ -146,7 +146,7 @@ public:
     /// </summary>
     API_PROPERTY() void SetSurfaceList(PLCTSurfaceList* surfaces)
     {
-        _surfaces = *surfaces;
+        _surfaces = surfaces;
     }
 
     /// <summary>
@@ -154,7 +154,7 @@ public:
     /// </summary>
     API_PROPERTY() PLCTSurfaceList* GetSurfaceList()
     {
-        return &_surfaces;
+        return _surfaces;
     }
 
 private:
@@ -164,6 +164,6 @@ private:
         return volume->GetOrientedBox().Contains(Vector3(point.X, volume->GetPosition().Y, point.Y)) == ContainmentType::Contains;
     }
 
-    PLCTSurfaceList _surfaces;
+    PLCTSurfaceList* _surfaces;
     SurfaceSamplerSettings _settings;
 };
