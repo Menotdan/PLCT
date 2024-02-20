@@ -72,6 +72,15 @@ public:
         return false;
     }
 
+    API_FUNCTION() virtual PLCTSurface* Copy()
+    {
+        ScriptingType type = GetType();
+        PLCTSurface* surface = (PLCTSurface*)Scripting::NewObject(type.GetHandle());
+        _properties.CopyInto(surface->_properties);
+        surface->_volume = _volume;
+        return surface;
+    }
+
     /// <summary>
     /// Gets/Sets the volume associated with this surface.
     /// </summary>

@@ -78,6 +78,7 @@ void PLCTVolume::GenerateThread(int32 id)
     graph->RunGeneration(this);
 
     Platform::AtomicStore(&_generateThreadID, -1);
+    LOG(Warning, "Ended Generation Thread.");
     return;
 }
 

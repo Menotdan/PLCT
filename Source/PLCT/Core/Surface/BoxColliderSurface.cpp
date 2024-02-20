@@ -62,3 +62,11 @@ bool BoxColliderSurface::CheckSurfaceTag(Tag tag)
 {
     return _actor->HasTag(tag);
 }
+
+PLCTSurface* BoxColliderSurface::Copy()
+{
+    PLCTSurface* copied = PLCTSurface::Copy();
+    copied->CheckActorMatchesAndSet(_actor);
+
+    return copied;
+}

@@ -21,6 +21,7 @@ public:
     bool SampleXZ(Vector2 coordinates, PLCTPointsContainer* targetContainer) override;
     bool CheckActorMatchesAndSet(Actor* actor) override;
     bool CheckSurfaceTag(Tag tag) override;
+    PLCTSurface* Copy() override;
 
 private:
     BoxCollider* _actor = nullptr;

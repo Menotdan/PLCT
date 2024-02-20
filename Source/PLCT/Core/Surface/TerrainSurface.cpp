@@ -72,3 +72,11 @@ bool TerrainSurface::CheckSurfaceTag(Tag tag)
 {
     return _actor->HasTag(tag);
 }
+
+PLCTSurface* TerrainSurface::Copy()
+{
+    PLCTSurface* copied = PLCTSurface::Copy();
+    copied->CheckActorMatchesAndSet(_actor);
+
+    return copied;
+}

@@ -56,13 +56,7 @@ bool PLCTNodeFilterSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume
         if (!CheckSurface(surface))
             continue;
 
-        // Fun memory hacks
-        ScriptingType type = surface->GetType();
-        PLCTSurface* filteredSurface = (PLCTSurface*) Scripting::NewObject(type.GetHandle());
-        Guid id = filteredSurface->GetID();
-        Platform::MemoryCopy(filteredSurface, surface, type.Size);
-        filteredSurface->ChangeID(id);
-
+        PLCTSurface* filteredSurface = surface->Copy();
         filteredSurfaces->GetSurfaces().Add(filteredSurface);
     }
 

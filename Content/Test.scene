@@ -112,6 +112,18 @@
 			"TypeName": "PLCT.PLCTVolume",
 			"ParentID": "015f45be464a8065eac11c9f1f177e1f",
 			"Name": "PLCTVolume",
+			"Transform": {
+				"Translation": {
+					"X": 25000.0,
+					"Y": 0.0,
+					"Z": 25000.0
+				}
+			},
+			"Size": {
+				"X": 51607.0,
+				"Y": 1000.0,
+				"Z": 52235.0
+			},
 			"Graph": "940defff4bc5d0eaf464cbbe12684edb",
 			"GenerationContainer": "52377ddd4d448bd06c87ad9380c6ce3c"
 		},
