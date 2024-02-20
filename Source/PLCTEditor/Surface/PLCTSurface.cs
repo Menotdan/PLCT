@@ -21,13 +21,19 @@ namespace FlaxEditor.Surface
         private static NodesCache _nodesCache = new NodesCache(IterateNodesCache);
         /// <inheritdoc />
         public PLCTGraphSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo = null, SurfaceStyle style = null, List<GroupArchetype> groups = null)
-    : base(owner, onSave, undo, style, new List<GroupArchetype>(1) {
+    : base(owner, onSave, undo, style, new List<GroupArchetype>(2) {
                 new GroupArchetype()
                 {
                     GroupID = 1,
                     Archetypes = PLCTArchetype.Nodes,
                     Color = Color.Crimson,
                     Name = "PLCT",
+                },
+                new GroupArchetype()
+                {
+                    GroupID = 7,
+                    Archetypes = Surface.Archetypes.Tools.Nodes,
+                    Name = "Tools",
                 }
             })
         {
