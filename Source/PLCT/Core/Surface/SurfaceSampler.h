@@ -5,9 +5,11 @@
 #include "Engine/Scripting/ScriptingType.h"
 #include "Engine/Core/Config.h"
 #include "Engine/Core/RandomStream.h"
+#include "../PLCTTypes.h"
 #include "../../Level/PLCTVolume.h"
 #include "../PLCTSurface.h"
 #include "../PLCTPoint.h"
+#include <Engine/Engine/Time.h>
 
 /// <summary>
 /// The settings for the surface sampler.
@@ -59,8 +61,7 @@ public:
 
         Vector2 current = start;
 
-        RandomStream stream = RandomStream();
-        stream.GenerateNewSeed();
+        CONFIGURE_RAND();
 
         int iterationCount = 0;
         while (true)

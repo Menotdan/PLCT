@@ -66,19 +66,32 @@ bool PLCTVolume::FindSurfaceAtIndex(PLCTSurface* surface, int index)
 
 void PLCTVolume::GenerateThread(int32 id)
 {
-    LOG(Warning, "Started Generation Thread..");
+    LOG(Info, "Started Generation...");
     PLCTGraph* graph = Graph.Get();
 
     if (!graph)
     {
+        if (RuntimeCache)
+        {
+            Delete(RuntimeCache);
+            RuntimeCache = nullptr;
+        }
+
+        LOG(Warning, "Volume missing graph! Cancelling...");
         Platform::AtomicStore(&_generateThreadID, -1);
         return;
     }
 
     graph->RunGeneration(this);
+    LOG(Info, "Freeing cache ({0})...", property_tracker::properties.Count());
+    if (RuntimeCache)
+    {
+        Delete(RuntimeCache);
+        RuntimeCache = nullptr;
+    }
 
     Platform::AtomicStore(&_generateThreadID, -1);
-    LOG(Warning, "Ended Generation Thread.");
+    LOG(Info, "Generation Completed.");
     return;
 }
 
@@ -98,19 +111,13 @@ bool PLCTVolume::Generate()
         return false;
     }
 
-    LOG(Warning, "Properties remaining before: {0}", property_tracker::properties.Count());
-    if (RuntimeCache)
-    {
-        Delete(RuntimeCache);
-    }
-    LOG(Warning, "Properties remaining: {0}", property_tracker::properties.Count());
-    RuntimeCache = New<PLCTPropertyStorage>();
-    CHECK_RETURN(RuntimeCache, false);
-
     if (Platform::AtomicRead(&_generateThreadID) != -1)
     {
         return false;
     }
+
+    RuntimeCache = New<PLCTPropertyStorage>();
+    CHECK_RETURN(RuntimeCache, false);
 
     Function<void (int32)> action;
     action.Bind<PLCTVolume, &PLCTVolume::GenerateThread>(this);

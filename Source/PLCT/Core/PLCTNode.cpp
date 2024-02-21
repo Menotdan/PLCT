@@ -5,7 +5,6 @@
 
 bool PLCTNodeFilter::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    LOG(Warning, "filter points");
     CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
@@ -36,7 +35,6 @@ bool PLCTNodeFilter::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int i
 
 bool PLCTNodeFilterSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    LOG(Warning, "filter surface");
     CACHE_READ(Arch0RuntimeCache, SurfaceList);
 
     PLCTSurfaceList* surfaces;

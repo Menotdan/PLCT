@@ -11,13 +11,13 @@
 #include "Engine/Physics/PhysicalMaterial.h"
 
 #include "PLCTProperties.h"
+#include "PLCTTypes.h"
 #include "Surface/BoxColliderSurface.h"
 #include "Surface/TerrainSurface.h"
 #include "Engine/Scripting/Internal/MainThreadManagedInvokeAction.h"
 
 bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    LOG(Warning, "sample surface");
     CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTSurfaceList* surfaces;
@@ -45,13 +45,12 @@ bool PLCTSampleSurface::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, in
 
     CACHE_WRITE(Arch2RuntimeCache, Points, points);
     output = Variant(points);
-    LOG(Warning, "Sampled {0} points.", points->GetPoints().Count());
+    LOG(Info, "[PLCT] Sampled {0} points.", points->GetPoints().Count());
     return true;
 }
 
 bool PLCTGetBoxColliderSurfaces::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    LOG(Warning, "get collider surfaces");
     CACHE_READ(Arch0RuntimeCache, SurfaceList);
 
     BoxColliderSurface* baseInstance = New<BoxColliderSurface>();
@@ -103,7 +102,6 @@ void DebugDrawer(PLCTPointsContainer* points, Color PointColor)
 
 bool PLCTDebugDrawPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
 {
-    LOG(Warning, "debug draw");
     PLCTPointsContainer* points;
 
     VisjectGraphBox box = node.Boxes[0];
@@ -190,18 +188,16 @@ public:
 
 bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
 {
-    LOG(Warning, "spawn prefabs");
     PLCTPointsContainer* points;
 
     VisjectGraphBox box = node.Boxes[0];
     if (!GetPoints(box, this, volume, points))
         return false;
 
-    RandomStream stream = RandomStream();
-    stream.GenerateNewSeed();
-
+    CONFIGURE_RAND();
     CHECK_RETURN(points, false);
 
+    LOG(Info, "[PLCT] Spawning {0} prefabs.", points->GetPoints().Count());
     CriticalSection prefabSpawnLock;
     prefabSpawnLock.Unlock();
     SpawnPrefabJob* job = new SpawnPrefabJob();
@@ -284,7 +280,6 @@ void PLCTTransformPoints::TransformPoints(Transform& transform)
 
 bool PLCTTransformPoints::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    LOG(Warning, "transform points");
     CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
@@ -301,8 +296,7 @@ bool PLCTTransformPoints::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, 
         PLCTPoint* point = points->GetPoints()[pointIdx];
         CHECK_RETURN(point, false);
 
-        PLCTPoint* transformedPoint = New<PLCTPoint>();
-        Memory::CopyItems<PLCTPoint>(transformedPoint, point, 1);
+        PLCTPoint* transformedPoint = point->Copy();
 
         Transform transform = transformedPoint->GetTransform();
         TransformPoints(transform);
@@ -336,7 +330,6 @@ void PLCTSetPointsTransform::TransformPoints(Transform& transform)
 
 bool PLCTSetPointsTransform::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volume, int id, Variant& output)
 {
-    LOG(Warning, "set points transform");
     CACHE_READ(Arch2RuntimeCache, Points);
 
     PLCTPointsContainer* points;
@@ -353,8 +346,7 @@ bool PLCTSetPointsTransform::GetOutputBox(PLCTGraphNode& node, PLCTVolume* volum
         PLCTPoint* point = points->GetPoints()[pointIdx];
         CHECK_RETURN(point, false);
 
-        PLCTPoint* transformedPoint = New<PLCTPoint>();
-        Memory::CopyItems<PLCTPoint>(transformedPoint, point, 1);
+        PLCTPoint* transformedPoint = point->Copy();
 
         Transform transform = transformedPoint->GetTransform();
         TransformPoints(transform);
