@@ -18,8 +18,8 @@ The following graph samples points on a terrain, and then filters the points by 
 
 
 ### Graph:
-![A graph using the filter by normal node.](media\filter-by-normal-example-graph.png)
+![A graph using the filter by normal node.](media/filter-by-normal-example-graph.png)
 
 ### Output:
 
-![Trees not spawning on a cliff, but spawning on the ground.](media\filter-by-normal-example-output.png)
+![Trees not spawning on a cliff, but spawning on the ground.](media/filter-by-normal-example-output.png)
