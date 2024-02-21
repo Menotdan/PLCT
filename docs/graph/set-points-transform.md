@@ -5,8 +5,6 @@ The **Set Points Transform** node takes a list of points and sets their transfor
 ![Set Points Transform Node](media/set-points-transform.png)
 
 ## Properties
-![Set Points Transform Node Properties](media/set-points-transform-properties.png)
-
 | Property | Description |
 |--------|--------|
 | **Set Position** | Whether or not to set the Position of the point. |
@@ -15,3 +13,5 @@ The **Set Points Transform** node takes a list of points and sets their transfor
 | **Position** | The position to set the point to if **Set Position** is true. |
 | **Rotation** | The rotation to set the point to if **Set Rotation** is true. |
 | **Scale** | The scale to set the point to if **Set Scale** is true. |
+
+![Set Points Transform Node Properties](media/set-points-transform-properties.png)

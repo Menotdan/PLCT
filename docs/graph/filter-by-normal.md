@@ -5,9 +5,9 @@ The **Filter By Normal** node takes a list of points and creates a new list of p
 ![Filter By Normal Node](media/filter-by-normal.png)
 
 ## Properties
-![Filter By Normal Node Properties](media/filter-by-normal-properties.png)
-
 | Property | Description |
 |--------|--------|
 | **Min Value** | The lowest value of the "Normal" property for this point to be included in the output. |
 | **Max Value** | The highest value of the "Normal" property for this point to be included in the output. |
+
+![Filter By Normal Node Properties](media/filter-by-normal-properties.png)

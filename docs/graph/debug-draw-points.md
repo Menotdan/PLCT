@@ -5,8 +5,8 @@ The **Debug Draw Points** node takes a list of points and draws them in the edit
 ![Debug Draw Points](media/debug-draw-points.png)
 
 ## Properties
-![Debug Draw Points Node Properties](media/debug-draw-points-properties.png)
-
 | Property | Description |
 |--------|--------|
 | **Point Color** | The color of the points to be drawn. |
+
+![Debug Draw Points Node Properties](media/debug-draw-points-properties.png)

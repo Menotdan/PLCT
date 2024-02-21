@@ -5,9 +5,9 @@ The **Filter By Random** node takes a list of points and creates a new list of p
 ![Filter By Random Node](media/filter-by-random.png)
 
 ## Properties
-![Filter By Random Node Properties](media/filter-by-random-properties.png)
-
 | Property | Description |
 |--------|--------|
 | **Min Value** | The lowest value of the "Random" property for this point to be included in the output. |
 | **Max Value** | The highest value of the "Random" property for this point to be included in the output. |
+
+![Filter By Random Node Properties](media/filter-by-random-properties.png)

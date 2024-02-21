@@ -5,8 +5,6 @@ The **Transform Points** node takes a list of points and offsets the components 
 ![Transform Points Node](media/transform-points.png)
 
 ## Properties
-![Transform Points Node Properties](media/transform-points-properties.png)
-
 | Property | Description |
 |--------|--------|
 | **Randomize Position** |  Whether or not to add a randomized **Position** offset. |
@@ -21,3 +19,5 @@ The **Transform Points** node takes a list of points and offsets the components 
 | **Position Offset** | The static offset for the **Position**. |
 | **Rotation Offset** | The static offset for the **Rotation**. |
 | **Scale Multipler** | The static multiplier for the **Scale**. |
+
+![Transform Points Node Properties](media/transform-points-properties.png)

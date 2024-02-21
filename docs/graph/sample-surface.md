@@ -5,8 +5,8 @@ The **Sample Surface** node takes a collection of surfaces and samples them alon
 ![Sample Surface Node](media/sample-surface.png)
 
 ## Properties
-![Sample Surface Node Properties](media/sample-surface-properties.png)
-
 | Property | Description |
 |--------|--------|
 | **Spacing** | The distance (in cm) between each point that gets sampled on the grid. |
+
+![Sample Surface Node Properties](media/sample-surface-properties.png)
