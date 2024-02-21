@@ -11,3 +11,15 @@ The **Filter By Normal** node takes a list of points and creates a new list of p
 | **Max Value** | The highest value of the "Normal" property for this point to be included in the output. |
 
 ![Filter By Normal Node Properties](media/filter-by-normal-properties.png)
+
+## Example
+The following graph samples points on a terrain, and then filters the points by their normal vectors, making sure the normal vector is close to straight up (minimum Y component of 0.8) to prevent trees from spawning on cliffs.
+
+
+
+### Graph:
+![A graph using the filter by normal node.](media\filter-by-normal-example-graph.png)
+
+### Output:
+
+![Trees not spawning on a cliff, but spawning on the ground.](media\filter-by-normal-example-output.png)
