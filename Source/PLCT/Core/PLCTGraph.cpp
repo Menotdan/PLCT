@@ -18,7 +18,27 @@
 
 #define IS_PLCT_NODE(n) (n.GroupID == 1)
 
-REGISTER_BINARY_ASSET(PLCTGraph, "PLCT.PLCTGraph", false);
+//REGISTER_BINARY_ASSET(PLCTGraph, "PLCT.PLCTGraph", false);
+
+
+const String PLCTGraph::TypeName = TEXT("PLCT.PLCTGraph");
+class FactoryPLCTGraph : public BinaryAssetFactory<PLCTGraph>
+{
+public:
+    FactoryPLCTGraph() 
+    { 
+        IAssetFactory::Get().Add(PLCTGraph::TypeName, this);
+        LOG(Info, "registered factory.");
+    }
+
+    ~FactoryPLCTGraph()
+    {
+        IAssetFactory::Get().Remove(PLCTGraph::TypeName);
+    }
+
+    bool SupportsVirtualAssets() const override { return false; }
+};
+static FactoryPLCTGraph CFactoryPLCTGraph;
 
 PLCTGraphNode::~PLCTGraphNode() {
     SAFE_DELETE(Instance);
