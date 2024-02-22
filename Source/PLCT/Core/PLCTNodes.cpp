@@ -179,7 +179,7 @@ public:
     }
 };
 
-static Array<Actor*> FillAllChildrenRecursive(Actor* start, Array<Actor*>& results = Array<Actor*>())
+static Array<Actor*> FillAllChildrenRecursive(Actor* start, Array<Actor*>& results)
 {
     for (auto child : start->Children)
     {
@@ -200,7 +200,7 @@ void CopyData(PrefabSpawnEntry& entry)
     Actor* sourceActor = entry.CachedActor;
     Array<Actor*> actors;
     actors.Add(sourceActor);
-    actors.Add(FillAllChildrenRecursive(sourceActor));
+    actors.Add(FillAllChildrenRecursive(sourceActor, Array<Actor*>()));
 
     auto dataArr = Actor::ToBytes(actors);
 
