@@ -353,7 +353,7 @@ public:
     /// The physical material tag to compare.
     /// </summary>
     API_FIELD(Attributes = "EditorOrder(10)")
-    Tag MaterialTag = Tag::Tag();
+    Tag MaterialTag = Tag();
 
     /// <summary>
     /// Whether to invert the check.
