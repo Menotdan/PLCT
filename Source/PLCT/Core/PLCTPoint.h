@@ -10,8 +10,6 @@ API_CLASS() class PLCT_API PLCTPoint : public ScriptingObject
     DECLARE_SCRIPTING_TYPE_WITH_CONSTRUCTOR_IMPL(PLCTPoint, ScriptingObject);
 
 public:
-    //~PLCTPoint() = default;
-
     /// <summary>
     /// Gets the properties of the point.
     /// </summary>

@@ -17,7 +17,7 @@
 class property_tracker
 {
 public:
-    static Array<Guid> properties;
+    static int property_counter;
 };
 
 /// <summary>
@@ -30,14 +30,14 @@ API_CLASS() class PLCT_API PLCTProperty : public ScriptingObject
     static PLCTProperty* Spawn(const SpawnParams& params) { return ::New<PLCTProperty>(params); }
     explicit PLCTProperty(const SpawnParams& params) : ScriptingObject(params)
     {
-        property_tracker::properties.Add(params.ID);
+        property_tracker::property_counter++;
     }
     explicit PLCTProperty() : PLCTProperty(SpawnParams(Guid::New(), PLCTProperty::TypeInitializer)) {}
 
 public:
     ~PLCTProperty()
     {
-        property_tracker::properties.Remove(GetID());
+        property_tracker::property_counter--;
         if (Data.Type == VariantType(VariantType::Object))
         {
             Delete(Data.AsObject);

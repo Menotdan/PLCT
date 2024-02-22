@@ -83,7 +83,7 @@ void PLCTVolume::GenerateThread(int32 id)
     }
 
     graph->RunGeneration(this);
-    LOG(Info, "Freeing cache ({0})...", property_tracker::properties.Count());
+    LOG(Info, "Freeing cache ({0})...", property_tracker::property_counter);
     if (RuntimeCache)
     {
         Delete(RuntimeCache);
@@ -101,7 +101,7 @@ void PLCTVolume::CleanupThread(int32 id)
     Platform::AtomicStore(&_cleanupThreadID, -1);
 }
 
-Array<Guid> property_tracker::properties;
+int property_tracker::property_counter;
 
 bool PLCTVolume::Generate()
 {
