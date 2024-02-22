@@ -436,7 +436,7 @@ bool PLCTFilterByPhysicalMaterial::CheckPoint(PLCTPoint* point)
 
 bool PLCTFilterSurfaceByTag::CheckSurface(PLCTSurface* surface)
 {
-    bool tagExists = surface->CheckSurfaceTag(Tag);
+    bool tagExists = surface->CheckSurfaceTag(CompareTag);
     if (Inverted)
         tagExists = !Inverted;
 
