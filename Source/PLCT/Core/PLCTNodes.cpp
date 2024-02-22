@@ -117,11 +117,11 @@ bool PLCTDebugDrawPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
     return true;
 }
 
-#define PREFAB_SPAWN_JOBS 2
+#define PREFAB_SPAWN_JOBS 1
 struct PrefabToSpawn
 {
     Transform transform;
-    Prefab* prefab;
+    PrefabSpawnEntry* prefab;
 };
 
 class SpawnPrefabJob
@@ -166,25 +166,70 @@ public:
                 }
             }
             
-
             if (entry == nullptr)
             {
                 continue;
             }
 
-            if (!entry->Prefab || entry->Prefab->WaitForLoaded())
-            {
-                continue;
-            }
-
             Lock->Lock();
-            Prefab* prefabPicked = entry->Prefab.Get();
             Transform prefabTransform = points->GetPoints()[pointIdx]->GetTransform();
-            Spawn.Add(PrefabToSpawn{ prefabTransform, prefabPicked });
+            Spawn.Add(PrefabToSpawn{ prefabTransform, entry });
             Lock->Unlock();
         }
     }
 };
+
+static Array<Actor*> FillAllChildrenRecursive(Actor* start, Array<Actor*>& results = Array<Actor*>::Array())
+{
+    for (auto child : start->Children)
+    {
+        if (results.Contains(child))
+        {
+            continue;
+        }
+
+        results.Add(child);
+        FillAllChildrenRecursive(child, results);
+    }
+
+    return results;
+}
+
+void CopyData(PrefabSpawnEntry& entry)
+{
+    Actor* sourceActor = entry.CachedActor;
+    Array<Actor*> actors;
+    actors.Add(sourceActor);
+    actors.Add(FillAllChildrenRecursive(sourceActor));
+
+    auto dataArr = Actor::ToBytes(actors);
+
+    byte* data = (byte*)Platform::Allocate(dataArr.Count(), 1);
+    Platform::MemoryCopy(data, dataArr.Get(), dataArr.Count());
+    entry.CachedActorData = Span<byte>::Span(data, dataArr.Count());;
+}
+
+Actor* Clone(PrefabSpawnEntry* entry)
+{
+    Span<byte>& dataSpan = entry->CachedActorData;
+    
+    auto serializedIds = Actor::TryGetSerializedObjectsIds(dataSpan);
+
+    Dictionary<Guid, Guid> idMap;
+
+    for(auto id : serializedIds)
+    {
+        idMap[id] = Guid::New();
+    }
+
+    auto cloned = Actor::FromBytes(dataSpan, idMap);
+    if (cloned.Count() < 1)
+    {
+        LOG(Warning, "Entry returned empty span.");
+    }
+
+    return cloned[0];
+}
 
 bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
 {
@@ -196,6 +241,18 @@ bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
 
     CONFIGURE_RAND();
     CHECK_RETURN(points, false);
+
+    for (auto& entry : Prefabs)
+    {
+        if (!entry.Prefab || entry.Prefab->WaitForLoaded())
+            continue;
+
+        Actor* actor = PrefabManager::SpawnPrefab(entry.Prefab, (Actor*)volume->GenerationContainer.Get(), Transform::Identity);
+        actor->BreakPrefabLink();
+
+        entry.CachedActor = actor;
+        CopyData(entry);
+    }
 
     LOG(Info, "[PLCT] Spawning {0} prefabs.", points->GetPoints().Count());
     CriticalSection prefabSpawnLock;
@@ -212,8 +269,8 @@ bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
     JobSystem::Wait(JobSystem::Dispatch(action, PREFAB_SPAWN_JOBS));
     for (int i = 0; i < job->Spawn.Count(); i++)
     {
-        Actor* actor = PrefabManager::SpawnPrefab(job->Spawn[i].prefab, (Actor*)volume->GenerationContainer.Get(), job->Spawn[i].transform);
-        actor->BreakPrefabLink();
+        Actor* actor = Clone(job->Spawn[i].prefab); //PrefabManager::SpawnPrefab(job->Spawn[i].prefab, (Actor*)volume->GenerationContainer.Get(), job->Spawn[i].transform);
+        actor->SetTransform(job->Spawn[i].transform);
     }
 
     delete job;

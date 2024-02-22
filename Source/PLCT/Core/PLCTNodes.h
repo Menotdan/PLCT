@@ -109,6 +109,10 @@ API_STRUCT() struct PLCT_API PrefabSpawnEntry : ISerializable
     /// The prefab to spawn. Can be set empty to spawn nothing.
     /// </summary>
     API_FIELD() AssetReference<Prefab> Prefab;
+
+    // Cached actor during spawning to increase performance
+    Actor* CachedActor = nullptr;
+    Span<byte> CachedActorData;
 };
 
 /// <summary>
