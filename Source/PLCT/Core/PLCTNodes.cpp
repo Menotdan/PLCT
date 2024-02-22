@@ -200,7 +200,7 @@ void CopyData(PrefabSpawnEntry& entry)
     Actor* sourceActor = entry.CachedActor;
     Array<Actor*> actors;
     actors.Add(sourceActor);
-    actors.Add(FillAllChildrenRecursive(sourceActor, Array<Actor*>()));
+    FillAllChildrenRecursive(sourceActor, actors);
 
     auto dataArr = Actor::ToBytes(actors);
 
