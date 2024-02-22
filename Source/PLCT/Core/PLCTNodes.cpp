@@ -112,7 +112,7 @@ bool PLCTDebugDrawPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
     MainThreadManagedInvokeAction::ParamsBuilder params;
     params.AddParam(points);
     params.AddParam(PointColor);
-    MainThreadManagedInvokeAction::Invoke(DebugDrawer, params);
+    MainThreadManagedInvokeAction::Invoke((void*)DebugDrawer, params);
 
     return true;
 }
@@ -179,7 +179,7 @@ public:
     }
 };
 
-static Array<Actor*> FillAllChildrenRecursive(Actor* start, Array<Actor*>& results = Array<Actor*>::Array())
+static Array<Actor*> FillAllChildrenRecursive(Actor* start, Array<Actor*>& results = Array<Actor*>())
 {
     for (auto child : start->Children)
     {
@@ -206,7 +206,7 @@ void CopyData(PrefabSpawnEntry& entry)
 
     byte* data = (byte*)Platform::Allocate(dataArr.Count(), 1);
     Platform::MemoryCopy(data, dataArr.Get(), dataArr.Count());
-    entry.CachedActorData = Span<byte>::Span(data, dataArr.Count());;
+    entry.CachedActorData = Span<byte>(data, dataArr.Count());;
 }
 
 Actor* Clone(PrefabSpawnEntry* entry)
