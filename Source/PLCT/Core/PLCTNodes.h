@@ -379,7 +379,7 @@ public:
     /// The tag to compare.
     /// </summary>
     API_FIELD(Attributes = "EditorOrder(10)")
-    Tag Tag = Tag::Tag();
+    Tag Tag = Tag();
 
     /// <summary>
     /// Whether to invert the check.
