@@ -223,11 +223,6 @@ Actor* Clone(PrefabSpawnEntry* entry)
     }
 
     auto cloned = Actor::FromBytes(dataSpan, idMap);
-    if (cloned.Count() < 1)
-    {
-        LOG(Warning, "Entry returned empty span.");
-    }
-
     return cloned[0];
 }
 
@@ -267,6 +262,7 @@ bool PLCTSpawnPrefabAtPoints::Execute(PLCTGraphNode& node, PLCTVolume* volume)
     Function<void(int32)> action;
     action.Bind<SpawnPrefabJob, &SpawnPrefabJob::SpawnPrefabThread>(job);
     JobSystem::Wait(JobSystem::Dispatch(action, PREFAB_SPAWN_JOBS));
+
     for (int i = 0; i < job->Spawn.Count(); i++)
     {
         Actor* actor = Clone(job->Spawn[i].prefab); //PrefabManager::SpawnPrefab(job->Spawn[i].prefab, (Actor*)volume->GenerationContainer.Get(), job->Spawn[i].transform);
